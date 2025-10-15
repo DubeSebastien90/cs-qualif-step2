@@ -1,0 +1,6 @@
+Montreal, QC
+Toronto, ON
+Vancouver, BC
+New York, NY
+London, UK
+Paris, FR

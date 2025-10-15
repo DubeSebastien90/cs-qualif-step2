@@ -6,6 +6,7 @@ from cs_qualif_step2.core.domain.device.device_id import DeviceId
 from cs_qualif_step2.core.domain.device.exception.invalid_mac_adress import InvalidMacAddress
 from cs_qualif_step2.core.domain.device.exception.invalid_time_zone import InvalidTimeZone
 from cs_qualif_step2.core.domain.device.exception.invalidFirmwareVersion import InvalidFirmwareVersion
+from cs_qualif_step2.core.domain.device.exception.invalid_location import InvalidLocation
 from cs_qualif_step2.core.application.dto.device_config import DeviceConfig
 
 
@@ -30,6 +31,21 @@ class DeviceFactory:
         pattern = r"^\d+\.\d+\.\d+$"
         if not re.fullmatch(pattern, device_config.firmwareVersion):
             raise InvalidFirmwareVersion("Invalid firmware version")
+        
+        acceptedLocations = []
+
+        try:
+           with open(r"C:\Users\sebas\Documents\Github\ecole\cs-qualif-step2\cs_qualif_step2\core\domain\device\acceptedLocations.txt", 'r') as file:
+               for line in file:
+                   acceptedLocations.append(line.strip())
+        except FileNotFoundError:
+           print("Error: The file 'acceptedLocations.txt' was not found.")
+        except Exception as e:
+           print(f"An error occurred: {e}")
+
+        if not device_config.location in acceptedLocations:
+            raise InvalidLocation("Invalid location")
+
 
         device_id = DeviceId.generate()
 
