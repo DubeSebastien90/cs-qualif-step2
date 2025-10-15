@@ -5,8 +5,10 @@ from fastapi import APIRouter, status, Depends
 from fastapi.responses import JSONResponse
 
 from cs_qualif_step2.core.application.dto.device_config import DeviceConfig
+from cs_qualif_step2.core.application.dto.deviceGet import DeviceGet
 from cs_qualif_step2.config.get_device_service import get_device_service
 from cs_qualif_step2.core.api.dto.request.register_device_request import DeviceRegistrationRequest
+from cs_qualif_step2.core.api.dto.request.device_get_request import DeviceGetRequest
 from cs_qualif_step2.core.application.device_service import DeviceService
 
 device_router = APIRouter(
@@ -30,6 +32,29 @@ def register_device(
         timezone=device_registration_request.timezone,
     )
     device_id = device_service.register_device(device_config)
+
+    return JSONResponse(
+        status_code=status.HTTP_200_OK,
+        content={"device_id": device_id}
+    )
+
+device_get = APIRouter(
+    prefix="/api/v1/devices/{devideId}/config",
+    tags=["devices"]
+)
+
+@device_router.get("/{deviceId}/config")
+def register_device(
+    device_get_request: DeviceGetRequest,
+    device_service: DeviceService = Depends(get_device_service),
+):
+    device_get = DeviceGet(
+        channels=device_get_request.macAddress,
+        applications=device_get_request.model,
+        networkSettings=device_get_request.firmwareVersion,
+        displaySettings=device_get_request.serialNumber,
+    )
+    device_id = device_service.get_device(device_get)
 
     return JSONResponse(
         status_code=status.HTTP_200_OK,

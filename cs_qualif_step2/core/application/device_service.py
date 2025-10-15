@@ -2,6 +2,7 @@ import hashlib
 
 from cs_qualif_step2.core.domain.device.device_repository import DeviceRepository
 from cs_qualif_step2.core.application.dto.device_config import DeviceConfig
+from cs_qualif_step2.core.application.dto.deviceGet import DeviceGet
 from cs_qualif_step2.core.domain.device.devicefactory import DeviceFactory
 from cs_qualif_step2.core.domain.device.exception.device_with_same_mac_address_exception import \
     DeviceWithSameMacAddressException
@@ -22,3 +23,7 @@ class DeviceService:
         self.device_repository.save(device)
 
         return str(device.get_device_id())
+    
+    def get_device(self, device_get: DeviceGet):
+        return "YEEEES J'AI TELLEMENT TROUVÉ LA DEVICE T'ES TELLEMENT BEAU SÉBASTIEN"
+
