@@ -49,10 +49,10 @@ def register_device(
     device_service: DeviceService = Depends(get_device_service),
 ):
     device_get = DeviceGet(
-        channels=device_get_request.macAddress,
-        applications=device_get_request.model,
-        networkSettings=device_get_request.firmwareVersion,
-        displaySettings=device_get_request.serialNumber,
+        channels=device_get_request.channels,
+        applications=device_get_request.applications,
+        networkSettings=device_get_request.networkSettings,
+        displaySettings=device_get_request.displaySettings,
     )
     device_id = device_service.get_device(device_get)
 
