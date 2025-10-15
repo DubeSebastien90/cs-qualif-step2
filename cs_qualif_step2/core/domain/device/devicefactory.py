@@ -5,6 +5,7 @@ from cs_qualif_step2.core.domain.device.device import Device
 from cs_qualif_step2.core.domain.device.device_id import DeviceId
 from cs_qualif_step2.core.domain.device.exception.invalid_mac_adress import InvalidMacAddress
 from cs_qualif_step2.core.domain.device.exception.invalid_time_zone import InvalidTimeZone
+from cs_qualif_step2.core.domain.device.exception.invalidFirmwareVersion import InvalidFirmwareVersion
 from cs_qualif_step2.core.application.dto.device_config import DeviceConfig
 
 
@@ -25,6 +26,10 @@ class DeviceFactory:
 
         if (device_config.timezone not in acceptedTimeZones):
             raise InvalidTimeZone("Invalid Time Zone")
+        
+        pattern = r"^\d+\.\d+\.\d+$"
+        if not re.fullmatch(pattern, device_config.firmwareVersion):
+            raise InvalidFirmwareVersion("Invalid firmware version")
 
         device_id = DeviceId.generate()
 
